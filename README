@@ -1,0 +1,24 @@
+A basic Lawnchair demo by Tim Kim
+=======================================================================
+Lawnchair overview from the homepage:
+What is lawnchair?
+Sorta like a couch except smaller and outside, also, a client side JSON 
+document store. Perfect for webkit mobile apps that need a lightweight, 
+simple and elegant persistence solution. 
+
+Features:
+- micro tiny storage without the nasty SQL: pure and delicious JSON
+- clean and simple oo design with one db table per store
+- key/value store.. specifying a key is optional
+- happily and handily will treat your store as an array of objects
+- terse syntax for searching and therefore finding of objects
+
+=======================================================================
+Links: 
+Lawnchair homepage: http://blog.westcoastlogic.com/lawnchair/
+Lawnchair git downloads: http://github.com/brianleroux/lawnchair/downloads
+XUI git repo: git://github.com/brianleroux/xui.git
+Lawnchair demo repo: git://github.com/timkim/Lawnchair_demo.git
+
+
+ 
