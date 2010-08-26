@@ -4,8 +4,11 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
         <title>Lawnchair Demo</title> 
 		<script type="text/javascript" src="js/xui-core-1.0.0.js"></script>
+		<script type="text/javascript" src="js/xui-more-1.0.0.js"></script>
 		<script type="text/javascript" src="js/Lawnchair.js"></script>
 		<script type="text/javascript" src="js/adaptors/WebkitSQLiteAdaptor.js"></script>
+		<script type="text/javascript" src="js/adaptors/DomStorageAdaptor.js"></script>
+		<script type="text/javascript" src="js/adaptors/CookieAdaptor.js"></script>
 		<script type="text/javascript" src="js/adaptors/LawnchairAdaptorHelpers.js"></script>
 		<script type="text/javascript" src="js/demo.js"></script>
     </head> 
@@ -14,10 +17,20 @@
 	<div class = "title" style="width: 500px">
     <h1>Lawnchair demo!</h1>
 
-	<p>We're just going to be playing the with samples located at <a href="http://blog.westcoastlogic.com/lawnchair/">http://blog.westcoastlogic.com/lawnchair/</a> in the console</p>
+	<p>We're just going to be mostly playing the with examples located at <a href="http://blog.westcoastlogic.com/lawnchair/">http://blog.westcoastlogic.com/lawnchair/</a> in the console</p>
 	<p>Be sure to be running a webkit browser for this demo and have the console up and going.</p>
-	<p>There's a reference to the Lawnchair object so you can just type in <strong>storage</strong> in your console and get a reference</p>
+	<p>There's a reference to the Lawnchair object so you can just type in <strong>storage</strong> in your console to get a reference.</p>
 	
+	</div>
+	
+	<div>
+	<h2>A small sample</h2>
+	<form>
+		<input type="text" id="theTextbox" />
+		<button type="button" id="saveButton">Save it!</button>
+		<button type="button" id="getButton">Load 'em!</button>
+		<button type="button" id="nukeButton">Nuke 'em!</button>
+	</form>
 	</div>
     </body> 
 </html>
