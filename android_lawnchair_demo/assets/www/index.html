@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr"> 
+    <head> 
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+        <title>Lawnchair Demo</title> 
+		<script type="text/javascript" src="js/xui-core-1.0.0.js"></script>
+		<script type="text/javascript" src="js/xui-more-1.0.0.js"></script>
+		<script type="text/javascript" src="js/Lawnchair.js"></script>
+		<script type="text/javascript" src="js/adaptors/WebkitSQLiteAdaptor.js"></script>
+		<script type="text/javascript" src="js/adaptors/DomStorageAdaptor.js"></script>
+		<script type="text/javascript" src="js/adaptors/CookieAdaptor.js"></script>
+		<script type="text/javascript" src="js/adaptors/LawnchairAdaptorHelpers.js"></script>
+		<script type="text/javascript" src="js/demo.js"></script>
+    </head> 
+
+    <body>
+	<div class = "title" style="width: 500px">
+		<h1>Lawnchair demo!</h1>
+
+		<p>We're just going to be mostly playing the with examples located at <a href="http://blog.westcoastlogic.com/lawnchair/">http://blog.westcoastlogic.com/lawnchair/</a> in the console</p>
+		<p>You can switch up the adaptors in demo.js if the loaded adaptor doesn't work in your browser.</p>
+		<p>There's a reference to the Lawnchair object so you can just type in <strong>storage</strong> in your console to get a reference.</p>
+		
+	</div>
+	
+	<div>
+		<h2>Api calls</h2>
+		<p>Try giving these call a try with the storage object</p>
+		<ul>
+			<li><strong>save</strong> storage.save({key:'myKey', value: 'myValue'}, function(r){console.log(r)});</li>
+			<li><strong>get</strong> storage.get('myKey', function(r){console.log(r);});</li>
+			<li><strong>find</strong> storage.find('r.value == "myValue"', 'console.log(r)');</li>
+			<li><strong>each</strong> storage.each('console.log(r)');</li>
+			<li><strong>all</strong> storage.all('console.log(r)');</li>
+			<li><strong>nuke</strong> storage.nuke(); </li>
+			<li><strong>remove</strong> storage.remove('myKey');</li>
+		</ul>
+	</div>
+	
+	<div>
+		<h2>A small sample</h2>
+		<form>
+			<input type="text" id="theTextbox" />
+			<button type="button" id="saveButton">Save it!</button>
+			<button type="button" id="getButton">Load 'em!</button>
+			<button type="button" id="nukeButton">Nuke 'em!</button>
+		</form>
+		<div id="console"></div>
+	</div>
+    </body> 
+</html>
