@@ -41,14 +41,16 @@ CookieAdaptor.prototype = {
 		if (obj) {
 			obj.key = key;
 		}
-		if(callback) callback(obj);
+		if (callback)
+            this.terseToVerboseCallback(callback)(obj);
 	},
 	save:function(obj, callback){
 		var id = obj.key || this.uuid();
 		delete obj.key;
 		this.createCookie(id, this.serialize(obj), 365);
+        obj.key = id;
 		if (callback)
-			callback(obj);
+			this.terseToVerboseCallback(callback)(obj);
 	},
 	all:function(callback){
 		var cb = this.terseToVerboseCallback(callback);
@@ -72,16 +74,20 @@ CookieAdaptor.prototype = {
 	remove:function(keyOrObj, callback) {
 		var key = (typeof keyOrObj == 'string') ? keyOrObj : keyOrObj.key;
 		this.createCookie(key, '', -1);
-		if(callback)
-		  callback();
+		if (callback)
+		    this.terseToVerboseCallback(callback)();
 	},
-	nuke:function(nuke, callback) {
+	nuke:function(callback) {
 		var that = this;
 		this.all(function(r){
 			for (var i = 0, l = r.length; i < l; i++) {
 				if (r[i].key)
 					that.remove(r[i].key);
 			}
-		}, callback);
+            if (callback) {
+                callback = that.terseToVerboseCallback(callback);
+                callback(r);
+            }
+		});
 	}
 };

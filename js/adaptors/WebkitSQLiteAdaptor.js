@@ -25,6 +25,7 @@ WebkitSQLiteAdaptor.prototype = {
 		this.display	= merge('shed',      opts.display 	);
 		this.max		= merge(65536,       opts.max	  	);
 		this.db			= merge(null,        opts.db		);
+		this.perPage    = merge(10,          opts.perPage   );
 
 		// default sqlite callbacks
 		this.onError = function(){};
@@ -61,7 +62,7 @@ WebkitSQLiteAdaptor.prototype = {
 					function() {
 						if (callback != undefined) {
 							obj.key = id;
-							callback(obj);
+							that.terseToVerboseCallback(callback)(obj);
 						}
 					},
 					that.onError
@@ -78,7 +79,7 @@ WebkitSQLiteAdaptor.prototype = {
 					function() {
 						if (callback != undefined) {
 							obj.key = id;
-							callback(obj);
+							that.terseToVerboseCallback(callback)(obj);
 						}
 					},
 					that.onError
@@ -109,11 +110,11 @@ WebkitSQLiteAdaptor.prototype = {
 				[key],
 				function(tx, results) {
 					if (results.rows.length == 0) {
-						callback(null);
+						that.terseToVerboseCallback(callback)(null);
 					} else {
 						var o = that.deserialize(results.rows.item(0).value);
 						o.key = key;
-						callback(o);
+						that.terseToVerboseCallback(callback)(o);
 					}
 				},
 				this.onError
@@ -141,8 +142,33 @@ WebkitSQLiteAdaptor.prototype = {
 			that.onError);
 		});
 	},
+	paged:function(page, callback) {
+		var cb = this.terseToVerboseCallback(callback);
+		var that = this;
+		this.db.transaction(function(t) {
+		    var offset = that.perPage * (page - 1); // a little offset math magic so users don't have to be 0-based
+		    var sql = "SELECT * FROM " + that.table + " ORDER BY timestamp ASC LIMIT ? OFFSET ?";
+			t.executeSql(sql, [that.perPage, offset], function(tx, results) {
+				if (results.rows.length == 0 ) {
+					cb([]);
+				} else {
+					var r = [];
+					for (var i = 0, l = results.rows.length; i < l; i++) {
+						var raw = results.rows.item(i).value;
+						var obj = that.deserialize(raw);
+						obj.key = results.rows.item(i).id;
+						r.push(obj);
+					}
+					cb(r);
+				}
+			},
+			that.onError);
+		});
+	},
 	remove:function(keyOrObj, callback) {
 		var that = this;
+        if (callback)
+            callback = that.terseToVerboseCallback(callback);
 		this.db.transaction(function(t) {
 			t.executeSql(
 				"DELETE FROM " + that.table + " WHERE id = ?",
@@ -154,6 +180,8 @@ WebkitSQLiteAdaptor.prototype = {
 	},
 	nuke:function(callback) {
 		var that = this;
+        if (callback)
+            callback = that.terseToVerboseCallback(callback);
 		this.db.transaction(function(tx) {
 			tx.executeSql(
 				"DELETE FROM " + that.table,

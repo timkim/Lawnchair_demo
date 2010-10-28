@@ -21,7 +21,7 @@ DOMStorageAdaptor.prototype = {
 		this.storage = this.merge(window.localStorage, options.storage);
 		this.table = this.merge('field', options.table);
 		
-		if (!(this.storage instanceof window.Storage)) {
+		if (!window.Storage) {
 			this.storage = (function () {
 				// window.top.name ensures top level, and supports around 2Mb
 				var data = window.top.name ? self.deserialize(window.top.name) : {};
@@ -57,12 +57,14 @@ DOMStorageAdaptor.prototype = {
 	},
 
     get:function(key, callback) {
-        var obj = this.deserialize(this.storage.getItem(this.table + '::' + key));
+        var obj = this.deserialize(this.storage.getItem(this.table + '::' + key))
+          , cb = this.terseToVerboseCallback(callback);
+        
         if (obj) {
             obj.key = key;
-            if (callback) callback(obj);
+            if (callback) cb(obj);
         } else {
-			if (callback) callback(null);
+			if (callback) cb(null);
 		}
     },
 

@@ -18,10 +18,14 @@ Lawnchair.prototype = {
 			'cookie':window.CookieAdaptor,
 			'air':window.AIRSQLiteAdaptor,
 			'userdata':window.UserDataAdaptor,
-			'air-async':window.AIRSQLiteAsyncAdaptor
+			'air-async':window.AIRSQLiteAsyncAdaptor,
+			'blackberry':window.BlackBerryPersistentStorageAdaptor,
+            'couch':window.CouchAdaptor
 		};
-	
-		this.adaptor = opts.adaptor ? new adaptors[opts.adaptor](opts) : new WebkitSQLiteAdaptor(opts);
+		this.adaptor = opts.adaptor ? new adaptors[opts.adaptor](opts) : new DOMStorageAdaptor(opts);
+		
+        // Check for native JSON functions.
+        if (!JSON || !JSON.stringify) throw "Native JSON functions unavailable - please include http://www.json.org/json2.js or run on a decent browser :P";
 	},
 	
 	// Save an object to the store. If a key is present then update. Otherwise create a new record.
@@ -42,6 +46,9 @@ Lawnchair.prototype = {
 	// Removes all documents from a store and returns self.
 	nuke:function(callback) {this.adaptor.nuke(callback);return this},
 	
+	// Returns a page of results based on offset provided by user and perPage option
+	paged:function(page, callback) {this.adaptor.paged(page, callback)},
+	
 	/**
 	 * Iterator that accepts two paramters (methods or eval strings):
 	 *
@@ -50,8 +57,8 @@ Lawnchair.prototype = {
 	 *
 	 */
 	find:function(condition, callback) {
-		var is = (typeof condition == 'string') ? function(r){return eval(condition)} : condition;
-		var cb = this.adaptor.terseToVerboseCallback(callback);
+		var is = (typeof condition == 'string') ? function(r){return eval(condition)} : condition
+		  , cb = this.adaptor.terseToVerboseCallback(callback);
 	
 		this.each(function(record, index) {
 			if (is(record)) cb(record, index); // thats hot
